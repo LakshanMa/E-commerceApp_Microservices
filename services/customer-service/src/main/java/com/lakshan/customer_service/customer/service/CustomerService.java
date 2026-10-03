@@ -1,16 +1,21 @@
-package com.lakshan.customer_service.customer;
+package com.lakshan.customer_service.customer.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
+import com.lakshan.customer_service.customer.dto.CustomerRequest;
+import com.lakshan.customer_service.customer.dto.CustomerResponse;
+import com.lakshan.customer_service.customer.mapper.CustomerMapper;
+import com.lakshan.customer_service.customer.model.Customer;
+import com.lakshan.customer_service.customer.repository.CustomerRepository;
 import com.lakshan.customer_service.exception.CustomerNotFoundException;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor 
-@Service 
+@RequiredArgsConstructor
+@Service
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
@@ -18,7 +23,7 @@ public class CustomerService {
 
     public String createCustomer(CustomerRequest request) {
         var customer = customerRepository.save(customerMapper.toCustomer(request));
-            return customer.getId();
+        return customer.getId();
     }
 
     public void updateCustomer(CustomerRequest request) {
@@ -26,30 +31,30 @@ public class CustomerService {
                 .orElseThrow(() -> new CustomerNotFoundException(
                     String.format("Customer with id %s not found", request.id())
                 ));
-        
+
         mergeCustomer(customer, request);
         customerRepository.save(customer);
     }
 
     private void mergeCustomer(Customer customer, CustomerRequest request) {
-       if(StringUtils.isNotBlank(request.firstName())){
+        if (StringUtils.isNotBlank(request.firstName())) {
             customer.setFirstName(request.firstName());
-       }
-       if(StringUtils.isNotBlank(request.lastName())){
+        }
+        if (StringUtils.isNotBlank(request.lastName())) {
             customer.setLastName(request.lastName());
-       }
-       if(StringUtils.isNotBlank(request.email())){
+        }
+        if (StringUtils.isNotBlank(request.email())) {
             customer.setEmail(request.email());
-       }
-       if(request.address() != null){
-            customer.setAddress(request.address());
-       }
+        }
+        if (request.address() != null) {
+            customer.setAddress(customerMapper.toAddress(request.address()));
+        }
     }
 
     public List<CustomerResponse> findAllCustomers() {
         return customerRepository.findAll().stream()
                 .map(customerMapper::fromCustomer)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Boolean existsById(String customerId) {

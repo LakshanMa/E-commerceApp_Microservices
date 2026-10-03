@@ -1,12 +1,10 @@
-package com.lakshan.customer_service.customer;
-
+package com.lakshan.customer_service.customer.dto;
 
 public record CustomerResponse(
     String id,
     String firstname,
     String lastname,
     String email,
-    Address address
+    AddressDto address
 ) {
-
 }
