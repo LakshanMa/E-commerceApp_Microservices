@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: customer-service
+    
+    data:
+        mongodb:
+            username: lakshan
+            password: lakshan
+            hots: localhost
+            port: 27017
+            database: customer_db
+            authentication-database: admin
+server:
+    port: 8090
