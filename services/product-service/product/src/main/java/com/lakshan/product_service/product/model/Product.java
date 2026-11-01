@@ -1,4 +1,6 @@
-package com.lakshan.product_service.product;
+package com.lakshan.product_service.product.model;
+
+import java.math.BigDecimal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,7 +19,7 @@ import lombok.Setter;
 @Setter 
 @Entity 
 @Builder 
-public class product {
+public class Product {
     
     @Id
     @GeneratedValue 
@@ -25,8 +27,9 @@ public class product {
     private String name;
     private String description;
     private double availableQuantity;
+    private BigDecimal price;
     @ManyToOne 
     @JoinColumn (name = "category_id")
-    private category category;
+    private Category category;
 
 }

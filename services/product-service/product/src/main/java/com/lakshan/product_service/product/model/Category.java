@@ -1,4 +1,4 @@
-package com.lakshan.product_service.product;
+package com.lakshan.product_service.product.model;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter 
 @Builder 
 @Entity 
-public class category {
+public class Category {
 
     @Id 
     @GeneratedValue 
@@ -27,6 +27,6 @@ public class category {
     private String name;
     private String description;
     @OneToMany (mappedBy = "category", cascade = CascadeType.REMOVE)
-    private List<product> products;
+    private List<Product> products;
 
 }
